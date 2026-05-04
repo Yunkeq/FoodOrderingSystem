@@ -1,0 +1,9 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <ItemGroup>
+    <ProjectReference Include="..\FoodOrderingSystem.Domain\FoodOrderingSystem.Domain.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Common\CustomErrors\" />
+    <Folder Include="Restaurants\" />
+  </ItemGroup>
+</Project>
