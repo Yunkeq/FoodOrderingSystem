@@ -1,19 +1,20 @@
 ﻿using System.Reflection;
 using FoodOrderingSystem.Domain.Entities;
-using Microsoft.AspNetCore.Identity;
+using FoodOrderingSystem.Infrastructure.Persistance.Configurations;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 
 namespace FoodOrderingSystem.Infrastructure.Persistance;
 
-public sealed class ApplicationDbContext : IdentityDbContext<IdentityUser<Guid>, IdentityRole<Guid>, Guid>
+public sealed class ApplicationDbContext : IdentityDbContext<ApplicationUser, ApplicationRole, Guid>
 {
+    private const string DbSchema = "Db:Schema";
     private readonly string _schema;
 
     public ApplicationDbContext(IConfiguration configuration)
     {
-        _schema = configuration["Db:Schema"] ?? throw new ArgumentException("Db schema is not specified.");
+        _schema = configuration[DbSchema] ?? throw new ArgumentException("Db schema is not specified.");
     }
 
     public DbSet<Restaurant> Restaurants { get; set; }

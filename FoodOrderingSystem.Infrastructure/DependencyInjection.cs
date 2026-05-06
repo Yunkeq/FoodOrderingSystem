@@ -1,6 +1,7 @@
 ﻿using System.Text;
 using FoodOrderingSystem.Application.Common.Options;
 using FoodOrderingSystem.Application.Common.Security;
+using FoodOrderingSystem.Domain.Entities;
 using FoodOrderingSystem.Domain.Enums;
 using FoodOrderingSystem.Infrastructure.Persistance;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -15,13 +16,16 @@ namespace FoodOrderingSystem.Infrastructure;
 
 public static class DependencyInjection
 {
-    private const string DbConnectionString = "Db:ConnectionString";
+    private const string DbConnectionStringSection = "Db:ConnectionString";
+    private const string JwtSection = "Jwt";
 
     public static IServiceCollection AddInfrastructure(
         this IServiceCollection services,
-        IConfiguration configuration,
-        IOptions<JwtOptions> jwtOptions)
+        IConfiguration configuration)
     {
+        var jwtOptions = configuration.GetSection(JwtSection).Get<JwtOptions>()
+            ?? throw new ArgumentException("Jwt options are not specified.");
+
         return services
             .AddPostgres(configuration)
             .AddIdentity()
@@ -34,13 +38,13 @@ public static class DependencyInjection
         return services
             .AddDbContext<ApplicationDbContext>(options =>
             {
-                options.UseNpgsql(configuration[DbConnectionString] ?? throw new ArgumentException("Db connection string is not specified."));
+                options.UseNpgsql(configuration[DbConnectionStringSection] ?? throw new ArgumentException("Db connection string is not specified."));
             });
     }
 
     private static IServiceCollection AddIdentity(this IServiceCollection services)
     {
-        services.AddIdentityCore<IdentityUser>(options =>
+        services.AddIdentityCore<ApplicationUser>(options =>
         {
             options.User.RequireUniqueEmail = true;
             options.User.RequireUniqueEmail = true;
@@ -55,7 +59,7 @@ public static class DependencyInjection
         return services;
     }
 
-    private static IServiceCollection AddJwtAuthentication(this IServiceCollection services, IOptions<JwtOptions> jwtOptions)
+    private static IServiceCollection AddJwtAuthentication(this IServiceCollection services, JwtOptions jwtOptions)
     {
         services
            .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -67,9 +71,9 @@ public static class DependencyInjection
                    ValidateAudience = true,
                    ValidateLifetime = true,
                    ValidateIssuerSigningKey = true,
-                   ValidIssuer = jwtOptions.Value.Issuer,
-                   ValidAudience = jwtOptions.Value.Audience,
-                   IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtOptions.Value.SigningKey)),
+                   ValidIssuer = jwtOptions.Issuer,
+                   ValidAudience = jwtOptions.Audience,
+                   IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtOptions.SigningKey)),
                    ClockSkew = TimeSpan.Zero,
                };
 

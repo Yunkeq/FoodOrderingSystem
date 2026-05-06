@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Identity;
-
-namespace FoodOrderingSystem.Domain.Entities;
+﻿namespace FoodOrderingSystem.Domain.Entities;
 
 public sealed class RefreshToken
 {
@@ -8,5 +6,5 @@ public sealed class RefreshToken
     public string Token { get; set; } = string.Empty;
     public DateTime ExpiresOn { get; set; }
     public Guid UserId { get; set; }
-    public IdentityUser? User { get; set; }
+    public ApplicationUser? User { get; set; }
 }
