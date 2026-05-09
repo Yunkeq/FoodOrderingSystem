@@ -3,4 +3,5 @@
 public enum ErrorCode
 {
     None = 0,
+    Validation,
 }

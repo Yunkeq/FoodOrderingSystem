@@ -1,4 +1,7 @@
-﻿using FoodOrderingSystem.Application.Common.Options;
+﻿using FluentValidation;
+using FoodOrderingSystem.Application.Abstractions.Messaging;
+using FoodOrderingSystem.Application.Common.Behaviour;
+using FoodOrderingSystem.Application.Common.Options;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -7,17 +10,49 @@ namespace FoodOrderingSystem.Application;
 public static class DependencyInjection
 {
     private const string JwtSectionName = "Jwt";
+
     public static IServiceCollection AddApplication(this IServiceCollection services, IConfiguration configuration)
     {
         return services
-            .AddOptions();
+            .AddOptions(configuration)
+            .AddHandlers()
+            .AddValidators()
+            .AddFluentValidationDecorators();
     }
 
-    private static IServiceCollection AddOptions(this IServiceCollection services)
+    private static IServiceCollection AddOptions(this IServiceCollection services, IConfiguration configuration)
     {
         services
-           .AddOptions<JwtOptions>()
-               .BindConfiguration(JwtSectionName);
+            .AddOptions<JwtOptions>()
+            .BindConfiguration(JwtSectionName);
+
+        return services;
+    }
+
+    private static IServiceCollection AddHandlers(this IServiceCollection services)
+    {
+        services.Scan(scan => scan
+            .FromAssemblyOf<AssemblyReference>()
+            .AddClasses(c => c.AssignableTo(typeof(ICommandHandler<,>)))
+                .AsImplementedInterfaces()
+                .WithScopedLifetime()
+            .AddClasses(c => c.AssignableTo(typeof(ICommandHandler<>)))
+                .AsImplementedInterfaces()
+                .WithScopedLifetime());
+
+        return services;
+    }
+
+    private static IServiceCollection AddValidators(this IServiceCollection services)
+    {
+        services.AddValidatorsFromAssemblyContaining<AssemblyReference>(includeInternalTypes: true);
+        return services;
+    }
+
+    private static IServiceCollection AddFluentValidationDecorators(this IServiceCollection services)
+    {
+        services.Decorate(typeof(ICommandHandler<,>), typeof(ValidationDecorator<,>));
+        services.Decorate(typeof(ICommandHandler<>), typeof(ValidationDecorator<>));
 
         return services;
     }
