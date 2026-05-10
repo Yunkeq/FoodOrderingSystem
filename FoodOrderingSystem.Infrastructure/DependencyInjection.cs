@@ -1,10 +1,15 @@
 ﻿using System.Text;
 using FoodOrderingSystem.Application.Abstractions.Db;
+using FoodOrderingSystem.Application.Abstractions.Identity;
+using FoodOrderingSystem.Application.Abstractions.Repositories;
 using FoodOrderingSystem.Application.Common.Options;
 using FoodOrderingSystem.Application.Common.Security;
 using FoodOrderingSystem.Domain.Entities;
 using FoodOrderingSystem.Domain.Enums;
+using FoodOrderingSystem.Infrastructure.Identity;
 using FoodOrderingSystem.Infrastructure.Persistance;
+using FoodOrderingSystem.Infrastructure.Persistance.Configurations;
+using FoodOrderingSystem.Infrastructure.Persistance.Repositories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -30,6 +35,10 @@ public static class DependencyInjection
             .AddPostgres(configuration)
             .AddIdentity()
             .AddJwtAuthentication(jwtOptions)
+            .AddRepositories()
+            .AddDbConnectionFactory()
+            .AddTokenProvider()
+            .AddUserManager()
             .AddAuthorization();
     }
 
@@ -56,7 +65,7 @@ public static class DependencyInjection
             options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(3);
             options.Lockout.MaxFailedAccessAttempts = 3;
         })
-            .AddRoles<IdentityRole>()
+            .AddRoles<ApplicationRole>()
             .AddEntityFrameworkStores<ApplicationDbContext>()
             .AddDefaultTokenProviders();
 
@@ -110,5 +119,27 @@ public static class DependencyInjection
         });
 
         return services;
+    }
+
+    private static IServiceCollection AddRepositories(this IServiceCollection services)
+    {
+        services.AddScoped<IRestaurantRepository, RestaurantRepository>();
+
+        return services;
+    }
+
+    private static IServiceCollection AddDbConnectionFactory(this IServiceCollection services)
+    {
+        return services.AddScoped<IDbConnectionFactory, DbConnectionFactory>();
+    }
+
+    private static IServiceCollection AddTokenProvider(this IServiceCollection services)
+    {
+        return services.AddScoped<ITokenProvider, TokenProvider>();
+    }
+
+    private static IServiceCollection AddUserManager(this IServiceCollection services)
+    {
+        return services.AddScoped<IUserManagerProvider, UserManagerProvider>();
     }
 }

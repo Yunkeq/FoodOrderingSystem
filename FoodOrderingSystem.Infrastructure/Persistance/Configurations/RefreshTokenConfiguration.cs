@@ -19,7 +19,7 @@ public sealed class RefreshTokenConfiguration : IEntityTypeConfiguration<Refresh
             .IsRequired()
             .HasMaxLength(512);
 
-        builder.Property(rt => rt.ExpiresOn)
+        builder.Property(rt => rt.ExpirationDate)
             .IsRequired();
 
         builder.HasOne(rt => rt.User)

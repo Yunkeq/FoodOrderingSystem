@@ -7,6 +7,7 @@ namespace FoodOrderingSystem.Application.Abstractions.Db;
 public interface IApplicationDbContext
 {
     DbSet<Restaurant> Restaurants { get; }
+    DbSet<ApplicationUser> Users { get; }
     DbSet<MenuItem> MenuItems { get; }
     DbSet<Order> Orders { get; }
     DbSet<OrderItem> OrderItems { get; }

@@ -10,6 +10,7 @@ namespace FoodOrderingSystem.Application;
 public static class DependencyInjection
 {
     private const string JwtSectionName = "Jwt";
+    private const string DbSectionName = "Db";
 
     public static IServiceCollection AddApplication(this IServiceCollection services, IConfiguration configuration)
     {
@@ -26,6 +27,9 @@ public static class DependencyInjection
         services
             .AddOptions<JwtOptions>()
             .BindConfiguration(JwtSectionName);
+
+        services.AddOptions<DbOptions>()
+            .BindConfiguration(DbSectionName);
 
         return services;
     }

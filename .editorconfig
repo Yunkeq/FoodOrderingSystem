@@ -261,3 +261,4 @@ dotnet_diagnostic.SA1313.severity = none # ParameterNamesMustBeginWithLowerCaseL
 dotnet_diagnostic.SA1011.severity = none # ClosingSquareBracketsMustBeSpacedCorrectly
 dotnet_diagnostic.SA1118.severity = none # ParameterMustNotSpanMultipleLines
 dotnet_diagnostic.SA1601.severity = none # PartialElementsMustBeDocumented
+dotnet_diagnostic.SA1009.severity = none # ClosingParenthesisMustBeSpacedCorrectly

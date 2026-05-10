@@ -4,6 +4,11 @@ using FoodOrderingSystem.Infrastructure;
 using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
+    builder.Configuration.AddUserSecrets<Program>(optional: true);
+
+if (builder.Environment.IsDevelopment())
+{
+}
 
 builder.Services.AddControllers();
 builder.Services.AddOpenApi();
@@ -16,8 +21,6 @@ builder.Host.UseSerilog((context, configuration) =>
 {
     configuration.ReadFrom.Configuration(context.Configuration);
 });
-
-builder.Services.AddApi();
 
 var app = builder.Build();
 

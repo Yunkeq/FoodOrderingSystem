@@ -14,7 +14,8 @@ public sealed class ApplicationDbContext : IdentityDbContext<ApplicationUser, Ap
     private const string DbSchema = "Db:Schema";
     private readonly string _schema;
 
-    public ApplicationDbContext(IConfiguration configuration)
+    public ApplicationDbContext(DbContextOptions options, IConfiguration configuration)
+        : base(options)
     {
         _schema = configuration[DbSchema] ?? throw new ArgumentException("Db schema is not specified.");
     }

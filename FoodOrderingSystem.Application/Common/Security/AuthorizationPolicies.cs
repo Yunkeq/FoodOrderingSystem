@@ -2,6 +2,6 @@
 
 public static class AuthorizationPolicies
 {
-    public static string AdminPriority => "AdminPriority";
-    public static string CustomerPriority => "CustomerPriority";
+    public const string AdminPriority = "AdminPriority";
+    public const string CustomerPriority = "CustomerPriority";
 }
