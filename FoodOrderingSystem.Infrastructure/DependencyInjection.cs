@@ -1,4 +1,5 @@
 ﻿using System.Text;
+using FoodOrderingSystem.Application.Abstractions.Db;
 using FoodOrderingSystem.Application.Common.Options;
 using FoodOrderingSystem.Application.Common.Security;
 using FoodOrderingSystem.Domain.Entities;
@@ -9,7 +10,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 
 namespace FoodOrderingSystem.Infrastructure;
@@ -35,11 +35,15 @@ public static class DependencyInjection
 
     private static IServiceCollection AddPostgres(this IServiceCollection services, IConfiguration configuration)
     {
-        return services
+        services
             .AddDbContext<ApplicationDbContext>(options =>
             {
                 options.UseNpgsql(configuration[DbConnectionStringSection] ?? throw new ArgumentException("Db connection string is not specified."));
             });
+
+        services.AddScoped<IApplicationDbContext>(provider => provider.GetRequiredService<ApplicationDbContext>());
+
+        return services;
     }
 
     private static IServiceCollection AddIdentity(this IServiceCollection services)

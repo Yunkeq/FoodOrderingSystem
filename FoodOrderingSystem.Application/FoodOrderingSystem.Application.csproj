@@ -3,13 +3,13 @@
     <ProjectReference Include="..\FoodOrderingSystem.Domain\FoodOrderingSystem.Domain.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Abstractions\Repositories\" />
     <Folder Include="Common\CustomErrors\" />
     <Folder Include="Restaurants\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="FluentValidation" />
     <PackageReference Include="FluentValidation.DependencyInjectionExtensions" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" />
     <PackageReference Include="Scrutor" />
   </ItemGroup>
 </Project>

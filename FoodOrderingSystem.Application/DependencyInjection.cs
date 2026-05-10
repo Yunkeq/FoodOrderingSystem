@@ -17,6 +17,7 @@ public static class DependencyInjection
             .AddOptions(configuration)
             .AddHandlers()
             .AddValidators()
+            .AddTransactionDecorators() // order matters: transaction decorators should be first because the last registered decorator is the outermost one
             .AddFluentValidationDecorators();
     }
 
@@ -38,6 +39,9 @@ public static class DependencyInjection
                 .WithScopedLifetime()
             .AddClasses(c => c.AssignableTo(typeof(ICommandHandler<>)))
                 .AsImplementedInterfaces()
+                .WithScopedLifetime()
+            .AddClasses(c => c.AssignableTo(typeof(IQueryHandler<,>)))
+                .AsImplementedInterfaces()
                 .WithScopedLifetime());
 
         return services;
@@ -53,6 +57,14 @@ public static class DependencyInjection
     {
         services.Decorate(typeof(ICommandHandler<,>), typeof(ValidationDecorator<,>));
         services.Decorate(typeof(ICommandHandler<>), typeof(ValidationDecorator<>));
+
+        return services;
+    }
+
+    private static IServiceCollection AddTransactionDecorators(this IServiceCollection services)
+    {
+        services.Decorate(typeof(ICommandHandler<,>), typeof(TransactionDecorator<,>));
+        services.Decorate(typeof(ICommandHandler<>), typeof(TransactionDecorator<>));
 
         return services;
     }
