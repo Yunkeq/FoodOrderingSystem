@@ -1,14 +1,10 @@
 using FoodOrderingSystem.Api;
 using FoodOrderingSystem.Application;
 using FoodOrderingSystem.Infrastructure;
+using FoodOrderingSystem.Infrastructure.Identity;
 using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
-    builder.Configuration.AddUserSecrets<Program>(optional: true);
-
-if (builder.Environment.IsDevelopment())
-{
-}
 
 builder.Services.AddControllers();
 builder.Services.AddOpenApi();
@@ -23,6 +19,8 @@ builder.Host.UseSerilog((context, configuration) =>
 });
 
 var app = builder.Build();
+
+await IdentitySeedRunner.SeedAsync(app.Services);
 
 if (app.Environment.IsDevelopment())
 {

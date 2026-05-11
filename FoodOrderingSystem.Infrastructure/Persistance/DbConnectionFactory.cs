@@ -17,10 +17,7 @@ public sealed class DbConnectionFactory : IDbConnectionFactory
 
     public IDbConnection CreateConnection()
     {
-        var builder = new NpgsqlConnectionStringBuilder(_dbOptions.Value.ConnectionString)
-        {
-            SearchPath = _dbOptions.Value.Schema,
-        };
+        var builder = new NpgsqlConnectionStringBuilder(_dbOptions.Value.ConnectionString);
 
         return new NpgsqlConnection(builder.ConnectionString);
     }

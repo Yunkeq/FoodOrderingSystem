@@ -116,7 +116,7 @@ public class AuthController : ControllerBase
             return ToProblemDetails(result.Error);
         }
 
-        return Ok(result);
+        return NoContent();
     }
 
     private IActionResult ToProblemDetails(Error error)

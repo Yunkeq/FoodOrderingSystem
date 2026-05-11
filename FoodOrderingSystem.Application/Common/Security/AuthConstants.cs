@@ -2,5 +2,5 @@
 
 public static class AuthConstants
 {
-    public const string AccessTokenCookie = "access_token";
+    public const string AccessTokenCookie = "accessToken";
 }

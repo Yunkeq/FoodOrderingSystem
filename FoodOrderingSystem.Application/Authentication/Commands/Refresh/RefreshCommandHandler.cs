@@ -51,8 +51,6 @@ public sealed class RefreshCommandHandler : ICommandHandler<RefreshCommand, Logi
         refreshToken.Token = newRefreshToken;
         refreshToken.ExpirationDate = DateTime.UtcNow.AddDays(7);
 
-        await _dbContext.SaveChangesAsync(cancellationToken);
-
         return Result<LoginDto>.Success(new LoginDto(accessToken, newRefreshToken));
     }
 }

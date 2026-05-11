@@ -4,6 +4,7 @@ using FoodOrderingSystem.Application.Abstractions.Messaging;
 using FoodOrderingSystem.Application.Common.CustomErrors;
 using FoodOrderingSystem.Application.Common.ResultPattern;
 using FoodOrderingSystem.Domain.Entities;
+using FoodOrderingSystem.Domain.Enums;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -40,6 +41,8 @@ public sealed class RegisterCommandHandler : ICommandHandler<RegisterCommand, Gu
         };
 
         await _userManager.CreateUser(newUser, command.Password);
+        await _userManager.AddToRoleAsync(newUser, UserRole.Customer.ToString());
+
         return Result<Guid>.Success(newUser.Id);
     }
 }

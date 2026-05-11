@@ -20,7 +20,8 @@ public sealed class RestaurantRepository : IRestaurantRepository
 
         const string sql =
             """
-            SELECT Name, City, IsOpen FROM Restaurants;
+            SELECT "Id","Name", "City", "IsOpen" 
+            FROM "FoodOrdering"."Restaurants";
             """;
 
         var restaurants = await connection.QueryAsync<RestaurantDto>(
@@ -36,8 +37,9 @@ public sealed class RestaurantRepository : IRestaurantRepository
 
         const string sql =
             """
-            SELECT Name, City, IsOpen FROM Restaurants
-            WHERE Id = @Id;
+            SELECT "Id", "Name", "City", "IsOpen"
+            FROM "FoodOrdering"."Restaurants"
+            WHERE "Id" = @Id;
             """;
 
         var restaurant = await connection.QueryFirstOrDefaultAsync<RestaurantDto>(

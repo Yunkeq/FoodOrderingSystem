@@ -13,6 +13,11 @@ public sealed class UserManagerProvider : IUserManagerProvider
         _userManager = userManager;
     }
 
+    public async Task AddToRoleAsync(ApplicationUser user, string role)
+    {
+        await _userManager.AddToRoleAsync(user, role);
+    }
+
     public async Task<bool> CheckPasswordAsync(ApplicationUser user, string password)
     {
         return await _userManager.CheckPasswordAsync(user, password);
