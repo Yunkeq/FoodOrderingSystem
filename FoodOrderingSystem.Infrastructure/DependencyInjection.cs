@@ -2,14 +2,15 @@
 using FoodOrderingSystem.Application.Abstractions.Db;
 using FoodOrderingSystem.Application.Abstractions.Identity;
 using FoodOrderingSystem.Application.Abstractions.Repositories;
+using FoodOrderingSystem.Application.Abstractions.Services;
 using FoodOrderingSystem.Application.Common.Options;
 using FoodOrderingSystem.Application.Common.Security;
 using FoodOrderingSystem.Domain.Entities;
 using FoodOrderingSystem.Domain.Enums;
 using FoodOrderingSystem.Infrastructure.Identity;
 using FoodOrderingSystem.Infrastructure.Persistance;
-using FoodOrderingSystem.Infrastructure.Persistance.Configurations;
 using FoodOrderingSystem.Infrastructure.Persistance.Repositories;
+using FoodOrderingSystem.Infrastructure.Redis.Restaurants;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -22,6 +23,7 @@ namespace FoodOrderingSystem.Infrastructure;
 public static class DependencyInjection
 {
     private const string DbConnectionStringSection = "Db:ConnectionString";
+    private const string RedisSection = "Redis";
     private const string JwtSection = "Jwt";
 
     public static IServiceCollection AddInfrastructure(
@@ -39,6 +41,8 @@ public static class DependencyInjection
             .AddDbConnectionFactory()
             .AddTokenProvider()
             .AddUserManager()
+            .AddRedis(configuration)
+            .AddCacheServices()
             .AddAuthorization();
     }
 
@@ -141,5 +145,31 @@ public static class DependencyInjection
     private static IServiceCollection AddUserManager(this IServiceCollection services)
     {
         return services.AddScoped<IUserManagerProvider, UserManagerProvider>();
+    }
+
+    private static IServiceCollection AddRedis(this IServiceCollection services, IConfiguration configuration)
+    {
+        var redisConnectionString = configuration
+            .GetValue<string>($"{RedisSection}:ConnectionString")
+            ?? throw new ArgumentException("Redis connection string is not specified.");
+
+        var redisPassword = configuration.GetValue<string>($"{RedisSection}:Password");
+
+        return services.AddStackExchangeRedisCache(options =>
+        {
+            options.ConfigurationOptions = new StackExchange.Redis.ConfigurationOptions
+            {
+                EndPoints =
+                {
+                    redisConnectionString,
+                },
+                Password = redisPassword,
+            };
+        });
+    }
+
+    private static IServiceCollection AddCacheServices(this IServiceCollection services)
+    {
+        return services.AddScoped<IRestaurantCacheService, RestaurantCacheService>();
     }
 }

@@ -11,6 +11,7 @@ public static class DependencyInjection
 {
     private const string JwtSectionName = "Jwt";
     private const string DbSectionName = "Db";
+    private const string CachingSectionName = "Redis";
 
     public static IServiceCollection AddApplication(this IServiceCollection services, IConfiguration configuration)
     {
@@ -29,7 +30,7 @@ public static class DependencyInjection
             .BindConfiguration(JwtSectionName);
 
         services.AddOptions<DbOptions>()
-            .BindConfiguration(DbSectionName);
+            .BindConfiguration(DbSectionName);;
 
         return services;
     }
