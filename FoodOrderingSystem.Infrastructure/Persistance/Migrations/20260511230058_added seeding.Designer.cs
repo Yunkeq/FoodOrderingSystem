@@ -3,6 +3,7 @@ using System;
 using FoodOrderingSystem.Infrastructure.Persistance;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace FoodOrderingSystem.Infrastructure.Persistance.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260511230058_added seeding")]
+    partial class addedseeding
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -53,12 +56,14 @@ namespace FoodOrderingSystem.Infrastructure.Persistance.Migrations
                         new
                         {
                             Id = new Guid("beed0937-74ed-411e-bbe3-843019837c15"),
+                            ConcurrencyStamp = "b0c4f1c4-7e0f-4d6b-9d4f-4b2d7f7b2a11",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
                             Id = new Guid("4eace38b-28b5-4414-8afb-66648ff47fa5"),
+                            ConcurrencyStamp = "1d6d0c8a-9b65-4f20-8c43-4ed8a6d5f4aa",
                             Name = "Customer",
                             NormalizedName = "CUSTOMER"
                         });

@@ -2,6 +2,8 @@ using FoodOrderingSystem.Api;
 using FoodOrderingSystem.Application;
 using FoodOrderingSystem.Infrastructure;
 using FoodOrderingSystem.Infrastructure.Identity;
+using FoodOrderingSystem.Infrastructure.Persistance;
+using Microsoft.EntityFrameworkCore;
 using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -20,12 +22,19 @@ builder.Host.UseSerilog((context, configuration) =>
 
 var app = builder.Build();
 
-await IdentitySeedRunner.SeedAsync(app.Services);
 
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
+}
+
+using (var scope = app.Services.CreateAsyncScope())
+{
+    var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+
+    await context.Database.MigrateAsync();
+    await IdentitySeedRunner.SeedAsync(app.Services);
 }
 
 app.UseSerilogRequestLogging();
