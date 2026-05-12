@@ -25,6 +25,14 @@ public sealed class UpdateMenuItemCommandHandler : ICommandHandler<UpdateMenuIte
             return Result.Failure(MenuItemErrors.MenuItemNotFound(command.Id));
         }
 
+        var restaurantExists = await _dbContext.Restaurants
+            .AnyAsync(r => r.Id == command.RestaurantId, cancellationToken);
+
+        if (!restaurantExists)
+        {
+            return Result.Failure(RestaurantErrors.RestaurantNotFound(command.RestaurantId));
+        }
+
         menuItem.Name = command.Name;
         menuItem.Price = command.Price;
         menuItem.IsAvailable = command.IsAvailable;

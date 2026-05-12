@@ -1,7 +1,9 @@
 using FoodOrderingSystem.Application.Abstractions.Db;
 using FoodOrderingSystem.Application.Abstractions.Messaging;
+using FoodOrderingSystem.Application.Common.CustomErrors;
 using FoodOrderingSystem.Application.Common.ResultPattern;
 using FoodOrderingSystem.Domain.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace FoodOrderingSystem.Application.MenuItems.Commands.CreateMenuItem;
 
@@ -16,6 +18,14 @@ public sealed class CreateMenuItemCommandHandler : ICommandHandler<CreateMenuIte
 
     public async Task<Result<Guid>> Handle(CreateMenuItemCommand command, CancellationToken cancellationToken)
     {
+        var restaurantExists = await _dbContext.Restaurants
+            .AnyAsync(r => r.Id == command.RestaurantId, cancellationToken);
+
+        if (!restaurantExists)
+        {
+            return Result<Guid>.Failure(RestaurantErrors.RestaurantNotFound(command.RestaurantId));
+        }
+
         var menuItem = new MenuItem
         {
             Id = Guid.NewGuid(),

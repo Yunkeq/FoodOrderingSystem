@@ -43,7 +43,6 @@ public sealed class MenuItemRepository : IMenuItemRepository
             """;
 
         var items = await connection.QueryAsync<MenuItemDto>(
-            sql,
             new CommandDefinition(sql, parameters: new { RestaurantId = restaurantId }, cancellationToken: cancellationToken));
 
         return items.ToList();
