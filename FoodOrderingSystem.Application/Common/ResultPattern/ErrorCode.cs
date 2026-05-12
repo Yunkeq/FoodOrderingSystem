@@ -8,5 +8,6 @@ public enum ErrorCode
     UserNotFound,
     InvalidUserCredentials,
     RestaurantNotFound,
+    MenuItemNotFound,
     Unauthorized,
 }

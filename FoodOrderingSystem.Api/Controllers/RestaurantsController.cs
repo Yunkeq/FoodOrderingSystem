@@ -39,13 +39,13 @@ public sealed class RestaurantsController : ControllerBase
 
     [HttpGet]
     [AllowAnonymous]
-    public async Task<IActionResult> GetAll(CancellationToken cancellationToken)
+    public async Task<ActionResult<IReadOnlyCollection<RestaurantResponse>>> GetAll(CancellationToken cancellationToken)
     {
         var result = await _getAllHandler.Handle(new GetRestaurantsQuery(), cancellationToken);
 
         if (!result.IsSuccess)
         {
-            return ToProblemDetails(result.Error);
+            return ProblemDetailsFromError(result.Error);
         }
 
         var response = result.Value!
@@ -57,13 +57,13 @@ public sealed class RestaurantsController : ControllerBase
 
     [HttpGet("{id:guid}")]
     [AllowAnonymous]
-    public async Task<IActionResult> GetById([FromRoute] Guid id, CancellationToken cancellationToken)
+    public async Task<ActionResult<RestaurantResponse>> GetById([FromRoute] Guid id, CancellationToken cancellationToken)
     {
         var result = await _getByIdHandler.Handle(new GetRestaurantByIdQuery(id), cancellationToken);
 
         if (!result.IsSuccess)
         {
-            return ToProblemDetails(result.Error);
+            return ProblemDetailsFromError(result.Error);
         }
 
         var r = result.Value!;
@@ -72,13 +72,13 @@ public sealed class RestaurantsController : ControllerBase
 
     [HttpPost]
     [Authorize(Policy = AuthorizationPolicies.AdminPriority)]
-    public async Task<IActionResult> Create([FromBody] CreateRestaurantRequest request, CancellationToken cancellationToken)
+    public async Task<ActionResult> Create([FromBody] CreateRestaurantRequest request, CancellationToken cancellationToken)
     {
         var result = await _createHandler.Handle(new CreateRestaurantCommand(request.Name, request.City, request.IsOpen), cancellationToken);
 
         if (!result.IsSuccess)
         {
-            return ToProblemDetails(result.Error);
+            return ProblemDetailsFromError(result.Error);
         }
 
         return CreatedAtAction(nameof(GetById), new { id = result.Value }, new { Id = result.Value });
@@ -86,13 +86,13 @@ public sealed class RestaurantsController : ControllerBase
 
     [HttpPut("{id:guid}")]
     [Authorize(Policy = AuthorizationPolicies.AdminPriority)]
-    public async Task<IActionResult> Update([FromRoute] Guid id, [FromBody] UpdateRestaurantRequest request, CancellationToken cancellationToken)
+    public async Task<ActionResult> Update([FromRoute] Guid id, [FromBody] UpdateRestaurantRequest request, CancellationToken cancellationToken)
     {
         var result = await _updateHandler.Handle(new UpdateRestaurantCommand(id, request.Name, request.City, request.IsOpen), cancellationToken);
 
         if (!result.IsSuccess)
         {
-            return ToProblemDetails(result.Error);
+            return ProblemDetailsFromError(result.Error);
         }
 
         return NoContent();
@@ -100,19 +100,19 @@ public sealed class RestaurantsController : ControllerBase
 
     [HttpDelete("{id:guid}")]
     [Authorize(Policy = AuthorizationPolicies.AdminPriority)]
-    public async Task<IActionResult> Delete([FromRoute] Guid id, CancellationToken cancellationToken)
+    public async Task<ActionResult> Delete([FromRoute] Guid id, CancellationToken cancellationToken)
     {
         var result = await _deleteHandler.Handle(new DeleteRestaurantCommand(id), cancellationToken);
 
         if (!result.IsSuccess)
         {
-            return ToProblemDetails(result.Error);
+            return ProblemDetailsFromError(result.Error);
         }
 
         return NoContent();
     }
 
-    private IActionResult ToProblemDetails(Error error)
+    private ObjectResult ProblemDetailsFromError(Error error)
     {
         var statusCode = error.ErrorCode switch
         {
