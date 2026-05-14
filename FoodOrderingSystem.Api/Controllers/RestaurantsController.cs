@@ -118,7 +118,7 @@ public sealed class RestaurantsController : ControllerBase
         {
             ErrorCode.Validation => StatusCodes.Status400BadRequest,
             ErrorCode.RestaurantNotFound => StatusCodes.Status404NotFound,
-            _ => StatusCodes.Status400BadRequest,
+            _ => throw new ArgumentException("Unexpected error code", nameof(error))
         };
 
         return Problem(

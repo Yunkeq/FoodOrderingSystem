@@ -125,7 +125,8 @@ public sealed class MenuItemsController : ControllerBase
         {
             ErrorCode.Validation => StatusCodes.Status400BadRequest,
             ErrorCode.MenuItemNotFound => StatusCodes.Status404NotFound,
-            _ => StatusCodes.Status400BadRequest,
+            ErrorCode.RestaurantNotFound => StatusCodes.Status404NotFound,
+            _ => throw new ArgumentException("Unexpected error code", nameof(error))
         };
 
         return Problem(

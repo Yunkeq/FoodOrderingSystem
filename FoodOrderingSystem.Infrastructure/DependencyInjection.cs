@@ -1,4 +1,5 @@
 ﻿using System.Text;
+using FoodOrderingSystem.Application.Abstractions.Caching;
 using FoodOrderingSystem.Application.Abstractions.Db;
 using FoodOrderingSystem.Application.Abstractions.Identity;
 using FoodOrderingSystem.Application.Abstractions.Repositories;
@@ -10,6 +11,7 @@ using FoodOrderingSystem.Domain.Enums;
 using FoodOrderingSystem.Infrastructure.Identity;
 using FoodOrderingSystem.Infrastructure.Persistance;
 using FoodOrderingSystem.Infrastructure.Persistance.Repositories;
+using FoodOrderingSystem.Infrastructure.Redis.Cart;
 using FoodOrderingSystem.Infrastructure.Redis.Restaurants;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
@@ -171,6 +173,9 @@ public static class DependencyInjection
 
     private static IServiceCollection AddCacheServices(this IServiceCollection services)
     {
-        return services.AddScoped<IRestaurantCacheService, RestaurantCacheService>();
+        services.AddScoped<IRestaurantCacheService, RestaurantCacheService>();
+        services.AddScoped<ICartService, CartService>();
+
+        return services;
     }
 }

@@ -9,5 +9,7 @@ public enum ErrorCode
     InvalidUserCredentials,
     RestaurantNotFound,
     MenuItemNotFound,
+    MenuItemIsNotAvailable,
     Unauthorized,
+    CartIsEmpty,
 }

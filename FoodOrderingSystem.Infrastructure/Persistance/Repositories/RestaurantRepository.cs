@@ -7,6 +7,7 @@ namespace FoodOrderingSystem.Infrastructure.Persistance.Repositories;
 
 public sealed class RestaurantRepository : IRestaurantRepository
 {
+    private const string DbSchema = "FoodOrdering";
     private readonly IDbConnectionFactory _dbConnectionFactory;
 
     public RestaurantRepository(IDbConnectionFactory dbConnectionFactory)
@@ -18,10 +19,9 @@ public sealed class RestaurantRepository : IRestaurantRepository
     {
         using var connection = _dbConnectionFactory.CreateConnection();
 
-        const string sql =
-            """
-            SELECT "Id","Name", "City", "IsOpen" 
-            FROM "FoodOrdering"."Restaurants";
+        const string sql = $"""
+            SELECT "Id", "Name", "City", "IsOpen"
+            FROM "{DbSchema}"."Restaurants";
             """;
 
         var restaurants = await connection.QueryAsync<RestaurantDto>(
@@ -35,16 +35,13 @@ public sealed class RestaurantRepository : IRestaurantRepository
     {
         using var connection = _dbConnectionFactory.CreateConnection();
 
-        const string sql =
-            """
+        const string sql = $"""
             SELECT "Id", "Name", "City", "IsOpen"
-            FROM "FoodOrdering"."Restaurants"
+            FROM "{DbSchema}"."Restaurants"
             WHERE "Id" = @Id;
             """;
 
-        var restaurant = await connection.QueryFirstOrDefaultAsync<RestaurantDto>(
+        return await connection.QuerySingleOrDefaultAsync<RestaurantDto>(
             new CommandDefinition(sql, parameters: new { Id = id }, cancellationToken: cancellationToken));
-
-        return restaurant;
     }
 }

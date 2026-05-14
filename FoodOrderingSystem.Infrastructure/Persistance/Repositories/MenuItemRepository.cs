@@ -7,6 +7,7 @@ namespace FoodOrderingSystem.Infrastructure.Persistance.Repositories;
 
 public sealed class MenuItemRepository : IMenuItemRepository
 {
+    private const string DbSchema = "FoodOrdering";
     private readonly IDbConnectionFactory _dbConnectionFactory;
 
     public MenuItemRepository(IDbConnectionFactory dbConnectionFactory)
@@ -18,10 +19,9 @@ public sealed class MenuItemRepository : IMenuItemRepository
     {
         using var connection = _dbConnectionFactory.CreateConnection();
 
-        const string sql =
-            """
+        var sql = $"""
             SELECT "Id", "Name", "Price", "IsAvailable", "RestaurantId"
-            FROM "FoodOrdering"."MenuItems";
+            FROM "{DbSchema}"."MenuItems";
             """;
 
         var items = await connection.QueryAsync<MenuItemDto>(
@@ -35,10 +35,9 @@ public sealed class MenuItemRepository : IMenuItemRepository
     {
         using var connection = _dbConnectionFactory.CreateConnection();
 
-        const string sql =
-            """
+        const string sql = $"""
             SELECT "Id", "Name", "Price", "IsAvailable", "RestaurantId"
-            FROM "FoodOrdering"."MenuItems"
+            FROM "{DbSchema}"."MenuItems"
             WHERE "RestaurantId" = @RestaurantId;
             """;
 

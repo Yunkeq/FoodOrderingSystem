@@ -28,16 +28,30 @@ public class GlobalExceptionHandler : IExceptionHandler
             httpContext.Request.Method,
             httpContext.Request.Path);
 
+        var (statusCode, title, detail, code) = exception switch
+        {
+            UnauthorizedAccessException => (
+                StatusCodes.Status401Unauthorized,
+                "Unauthorized",
+                "Authentication is required or the provided credentials are invalid.",
+                "unauthorized"),
+            _ => (
+                StatusCodes.Status500InternalServerError,
+                "Internal server error",
+                "An unexpected error occurred.",
+                "internal_server_error"),
+        };
+
         var problem = new ProblemDetails
         {
-            Status = StatusCodes.Status500InternalServerError,
-            Title = "Internal server error",
-            Detail = "An unexpected error occurred.",
+            Status = statusCode,
+            Title = title,
+            Detail = detail,
             Instance = httpContext.Request.Path,
             Extensions =
             {
                 ["traceId"] = httpContext.TraceIdentifier,
-                ["code"] = "internal_server_error",
+                ["code"] = code,
             },
         };
 

@@ -127,6 +127,7 @@ public class AuthController : ControllerBase
             ErrorCode.UserNotFound => StatusCodes.Status404NotFound,
             ErrorCode.Validation => StatusCodes.Status400BadRequest,
             ErrorCode.UserAlreadyExists => StatusCodes.Status400BadRequest,
+            ErrorCode.Unauthorized => StatusCodes.Status401Unauthorized,
             _ => throw new ArgumentException("Unexpected error code", nameof(error))
         };
 

@@ -12,15 +12,26 @@ public sealed class OrderConfiguration : IEntityTypeConfiguration<Order>
 
         builder.HasKey(o => o.Id);
 
+        builder.Property(o => o.CustomerId)
+            .IsRequired();
+
         builder.Property(o => o.OrderDate)
             .IsRequired();
 
         builder.Property(o => o.TotalAmount)
             .IsRequired();
 
+        builder.Property(o => o.TotalPrice)
+            .IsRequired();
+
         builder.HasMany(o => o.OrderItems)
             .WithOne(oi => oi.Order)
             .HasForeignKey(oi => oi.OrderId)
             .OnDelete(DeleteBehavior.Cascade);
+
+        builder.HasOne(o => o.Customer)
+            .WithMany()
+            .HasForeignKey(o => o.CustomerId)
+            .OnDelete(DeleteBehavior.Restrict);
     }
 }
