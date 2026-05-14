@@ -8,6 +8,7 @@ using FoodOrderingSystem.Application.Common.Options;
 using FoodOrderingSystem.Application.Common.Security;
 using FoodOrderingSystem.Domain.Entities;
 using FoodOrderingSystem.Domain.Enums;
+using FoodOrderingSystem.Infrastructure.BackgroundServices;
 using FoodOrderingSystem.Infrastructure.Identity;
 using FoodOrderingSystem.Infrastructure.Persistance;
 using FoodOrderingSystem.Infrastructure.Persistance.Repositories;
@@ -45,6 +46,7 @@ public static class DependencyInjection
             .AddUserManager()
             .AddRedis(configuration)
             .AddCacheServices()
+            .AddBackgroundServices()
             .AddAuthorization();
     }
 
@@ -169,6 +171,13 @@ public static class DependencyInjection
                 Password = redisPassword,
             };
         });
+    }
+
+    private static IServiceCollection AddBackgroundServices(this IServiceCollection services)
+    {
+        services.AddHostedService<ExpiredRefreshTokensCleanupBackgroundService>();
+
+        return services;
     }
 
     private static IServiceCollection AddCacheServices(this IServiceCollection services)
