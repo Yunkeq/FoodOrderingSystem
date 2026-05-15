@@ -14,7 +14,7 @@ using Microsoft.AspNetCore.Mvc;
 using Moq;
 using Xunit;
 
-namespace FoodOrderingSystem.UnitTests;
+namespace FoodOrderingSystem.UnitTests.ApiLayer.Restaurants;
 
 public sealed class RestaurantTests
 {
@@ -24,8 +24,8 @@ public sealed class RestaurantTests
         // Arrange
         var items = new List<RestaurantDto>
         {
-            new(Id: Guid.NewGuid(), Name: "A", City: "C1", IsOpen: true),
-            new(Id: Guid.NewGuid(), Name: "B", City: "C2", IsOpen: false),
+            new (Id: Guid.NewGuid(), Name: "A", City: "C1", IsOpen: true),
+            new (Id: Guid.NewGuid(), Name: "B", City: "C2", IsOpen: false),
         };
 
         var getAllHandler = new Mock<IQueryHandler<GetRestaurantsQuery, IReadOnlyCollection<RestaurantDto>>>(MockBehavior.Strict);

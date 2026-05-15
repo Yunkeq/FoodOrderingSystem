@@ -22,7 +22,6 @@ builder.Host.UseSerilog((context, configuration) =>
 
 var app = builder.Build();
 
-
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -46,3 +45,8 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+
+// for integration test factory
+public partial class Program
+{
+}
