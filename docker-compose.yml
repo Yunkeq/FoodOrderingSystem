@@ -1,0 +1,83 @@
+services:
+  api:
+    build:
+      context: ./Backend
+      dockerfile: FoodOrderingSystem.Api/Dockerfile
+      args:
+        BUILD_CONFIGURATION: Release
+    container_name: foodorderingsystem-api
+    environment:
+      ASPNETCORE_ENVIRONMENT: Production
+      ASPNETCORE_URLS: http://+:8080
+
+      Db__ConnectionString: Host=postgres;Port=5432;Database=FoodOrderingSystem;Username=postgres;Password=zaq1@WSX;Include Error Detail=true
+      Db__Schema: FoodOrdering
+
+      Redis__ConnectionString: redis:6379
+      Redis__Password: zaq1@WSX
+
+      Jwt__Audience: http://localhost:18080
+      Jwt__Issuer: http://localhost:18080
+      Jwt__SigningKey: super-secret-signing-key-super-secret-again-and-again
+      Jwt__AccessTokenExpirationMinutes: "15"
+      Jwt__RefreshTokenExpirationDays: "5"
+
+      Serilog__WriteTo__0__Name: Console
+      Serilog__WriteTo__1__Name: Seq
+      Serilog__WriteTo__1__Args__ServerUrl: http://seq:5341
+    ports:
+      - "18080:8080"
+    depends_on:
+      - postgres
+      - redis
+      - seq
+    restart: unless-stopped
+
+  postgres:
+    image: postgres:16-alpine
+    container_name: foodorderingsystem-postgres
+    environment:
+      POSTGRES_DB: FoodOrderingSystem
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: zaq1@WSX
+    ports:
+      - "15432:5432"
+    volumes:
+      - foodorderingsystem_pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d FoodOrderingSystem"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+    restart: unless-stopped
+
+  redis:
+    image: redis:7-alpine
+    container_name: foodorderingsystem-redis
+    command: ["redis-server", "--requirepass", "zaq1@WSX"]
+    ports:
+      - "16379:6379"
+    volumes:
+      - foodorderingsystem_redisdata:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "-a", "zaq1@WSX", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+    restart: unless-stopped
+
+  seq:
+    image: datalust/seq:2024.3
+    container_name: foodorderingsystem-seq
+    environment:
+      ACCEPT_EULA: "Y"
+    ports:
+      - "15341:80"
+    volumes:
+      - foodorderingsystem_seqdata:/data
+    restart: unless-stopped
+
+volumes:
+  foodorderingsystem_pgdata:
+  foodorderingsystem_redisdata:
+  foodorderingsystem_seqdata:
