@@ -6,6 +6,7 @@
 ![PostgreSQL](https://img.shields.io/badge/Postgres-Database-336791?logo=postgresql)
 ![Redis](https://img.shields.io/badge/Redis-Cache-DC382D?logo=redis)
 ![Dapper](https://img.shields.io/badge/Dapper-ORM-6d429c?logo=.net)
+![EF Core](https://img.shields.io/badge/EF%20Core-ORM-512BD4?logo=ef)
 ![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)
 
 Welcome to **FoodOrderingSystem**!  
@@ -118,7 +119,7 @@ All cart operations leverage Redis for low-latency, real-time updates. Data is s
 ```plaintext
 Backend/
   FoodOrderingSystem.Api/           # .NET API endpoints, Dependency Injection
-  FoodOrderingSystem.Application/   # Business/application logic
+  FoodOrderingSystem.Application/   # Business/application logic, SQRS
   FoodOrderingSystem.Domain/        # Business entities and value objects
   FoodOrderingSystem.Infrastructure/# Data access (Postgres, Dapper, EF), Redis, Auth
   FoodOrderingSystem.UnitTests/     # Unit tests
