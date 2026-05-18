@@ -16,7 +16,7 @@ A modern backend for real-world online food ordering — manage restaurants, men
 
 ## ✨ Tech Stack & Features
 
-- **C# / .NET 6+** API backend, built for scalability
+- **C# / .NET 9** API backend, built for scalability
 - **🍴 PostgreSQL** for primary data storage
 - **⚡ Redis** for caching (used for restaurant listing, cart, and more)
 - **🔑 JWT** authentication (access and refresh tokens via secure cookies)
