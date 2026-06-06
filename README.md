@@ -10,16 +10,16 @@
 ![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)
 
 Welcome to **FoodOrderingSystem**!  
-A modern backend for real-world online food ordering — manage restaurants, menu, cart, and orders with a robust and scalable architecture. 🚀
+A modern backend for real-world online food ordering — manage restaurants, menu, cart, and orders with a robust and scalable architecture.
 
 ---
 
 ## ✨ Tech Stack & Features
 
 - **C# / .NET 9** API backend, built for scalability
-- **🍴 PostgreSQL** for primary data storage
-- **⚡ Redis** for caching (used for restaurant listing, cart, and more)
-- **🔑 JWT** authentication (access and refresh tokens via secure cookies)
+- **PostgreSQL** for primary data storage
+- **Redis** for caching (used for restaurant listing, cart, and more)
+- **JWT** authentication (access and refresh tokens via secure cookies)
 - **Dapper** for high-performance, SQL-centric data access in addition to Entity Framework
 - **Serilog + Seq** for centralized structured logging
 - **Swagger** for easy, interactive API docs
@@ -124,7 +124,7 @@ Backend/
   FoodOrderingSystem.Infrastructure/# Data access (Postgres, Dapper, EF), Redis, Auth
   FoodOrderingSystem.UnitTests/     # Unit tests
   FoodOrderingSystem.IntegrationTests/ # End-to-end (E2E) tests
-docker-compose.yml                  # All-in-one orchestration 🚀
+docker-compose.yml                  # All-in-one orchestration
 ```
 
 ---
