@@ -54,7 +54,7 @@ public static class DependencyInjection
 
     private static IServiceCollection AddValidators(this IServiceCollection services)
     {
-        services.AddValidatorsFromAssemblyContaining<AssemblyReference>(includeInternalTypes: true);
+        services.AddValidatorsFromAssemblyContaining<AssemblyReference>();
         return services;
     }
 
