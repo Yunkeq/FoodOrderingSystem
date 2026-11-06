@@ -9,7 +9,7 @@
 ![EF Core](https://img.shields.io/badge/EF%20Core-ORM-512BD4?logo=ef)
 ![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)
 
-Welcome to **FoodOrderingSystem**!  
+**FoodOrderingSystem**!  
 A modern backend for real-world online food ordering - manage restaurants, menu, cart, and orders with a robust and scalable architecture.
 
 ---
@@ -40,7 +40,7 @@ docker-compose up --build
 - Swagger UI: [http://localhost:18080/swagger](http://localhost:18080/swagger)
 - Seq Logs: [http://localhost:15341](http://localhost:15341)
 
-No manual installation required-everything is containerized!
+No manual installation required-everything is containerized
 
 ---
 
