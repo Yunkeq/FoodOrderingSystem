@@ -1,4 +1,4 @@
-# 🍔 FoodOrderingSystem
+#  FoodOrderingSystem
 
 ![Build with .NET](https://img.shields.io/badge/.NET-6%2B-blueviolet?logo=dotnet)
 ![C#](https://img.shields.io/badge/C%23-Backend-blue?logo=csharp)
@@ -10,11 +10,11 @@
 ![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)
 
 Welcome to **FoodOrderingSystem**!  
-A modern backend for real-world online food ordering — manage restaurants, menu, cart, and orders with a robust and scalable architecture.
+A modern backend for real-world online food ordering - manage restaurants, menu, cart, and orders with a robust and scalable architecture.
 
 ---
 
-## ✨ Tech Stack & Features
+##  Tech Stack & Features
 
 - **C# / .NET 9** API backend, built for scalability
 - **PostgreSQL** for primary data storage
@@ -28,7 +28,7 @@ A modern backend for real-world online food ordering — manage restaurants, men
 
 ---
 
-## ⚡️ One-Second Quickstart
+##  One-Second Quickstart
 
 Spin up API, database, Redis & logging instantly with:
 
@@ -40,15 +40,15 @@ docker-compose up --build
 - Swagger UI: [http://localhost:18080/swagger](http://localhost:18080/swagger)
 - Seq Logs: [http://localhost:15341](http://localhost:15341)
 
-No manual installation required—everything is containerized!
+No manual installation required-everything is containerized!
 
 ---
 
-## 🛣️ API Endpoints & How They Work
+##  API Endpoints & How They Work
 
 Endpoints prefixed with `/api/`, most require authentication (see Auth block).
 
-### 🔑 Auth Endpoints
+###  Auth Endpoints
 
 | Method | Endpoint            | Description                                    |
 |--------|---------------------|------------------------------------------------|
@@ -62,7 +62,7 @@ User login/registration uses JWT and stores tokens both as cookies and (for refr
 
 ---
 
-### 🗺 Restaurants
+###  Restaurants
 
 | Method | Endpoint                      | Description           |
 |--------|-------------------------------|-----------------------|
@@ -79,7 +79,7 @@ User login/registration uses JWT and stores tokens both as cookies and (for refr
 
 ---
 
-### 🍽 Menu Items
+###  Menu Items
 
 | Method | Endpoint                                      | Description                                                    |
 |--------|-----------------------------------------------|----------------------------------------------------------------|
@@ -91,7 +91,7 @@ User login/registration uses JWT and stores tokens both as cookies and (for refr
 
 ---
 
-### 🛒 Cart
+###  Cart
 
 | Method | Endpoint                          | Description                                         |
 |--------|-----------------------------------|-----------------------------------------------------|
@@ -105,7 +105,7 @@ All cart operations leverage Redis for low-latency, real-time updates. Data is s
 
 ---
 
-### 🧾 Orders
+###  Orders
 
 | Method | Endpoint        | Description                              |
 |--------|-----------------|------------------------------------------|
@@ -114,7 +114,7 @@ All cart operations leverage Redis for low-latency, real-time updates. Data is s
 
 ---
 
-## 🏗 Project Structure
+##  Project Structure
 
 ```plaintext
 Backend/
@@ -129,7 +129,7 @@ docker-compose.yml                  # All-in-one orchestration
 
 ---
 
-## 🔧 How Dapper, Redis, and Caching Work
+##  How Dapper, Redis, and Caching Work
 
 - **Dapper**: Used for fast, SQL-optimized data queries especially for large or frequent list-type reads (e.g. all restaurants).
 - **Redis**: Accelerates all read/lookup operations for restaurants, menu, and carts by acting as a caching layer and session store.
